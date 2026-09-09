@@ -1,0 +1,45 @@
+{% extends "soc_base.html" %}
+{% set active_page = 'alerts' %}
+{% block title %}Alerts - CyberLab SOC{% endblock %}
+{% block page_label %}Security Alerts{% endblock %}
+
+{% block content %}
+<div class="soc-page-heading">
+    <div>
+        <div class="eyebrow">THREAT MONITORING / ALERT QUEUE</div>
+        <h1>Security Alerts</h1>
+        <p>Every attack detected by the monitoring engine. Click an alert for full details.</p>
+    </div>
+    <div class="heading-status"><span class="danger"></span> DETECTIONS</div>
+</div>
+
+<div class="data-toolbar">
+    <div><strong>Alert queue</strong><span class="toolbar-muted">Detection history and automated response status</span></div>
+    <span class="record-badge">{{ alerts|length }} records</span>
+</div>
+
+<div class="soc-panel data-panel">
+    <div class="table-scroll">
+        <table class="soc-table">
+            <thead>
+                <tr><th>#</th><th>Time</th><th>Alert</th><th>Severity</th><th>Source IP</th><th>Endpoint</th><th>Response</th></tr>
+            </thead>
+            <tbody>
+            {% for alert in alerts %}
+                <tr>
+                    <td class="mono muted">#{{ alert.id }}</td>
+                    <td>{{ alert.timestamp|clock12 }}</td>
+                    <td><a class="table-link" href="/soc/alert/{{ alert.id }}">{{ alert.alert_type }}</a></td>
+                    <td><span class="sev sev-{{ alert.severity|lower }}">{{ alert.severity }}</span></td>
+                    <td class="mono">{{ alert.source_ip }}</td>
+                    <td>{{ alert.endpoint }}</td>
+                    <td><span class="response-text resp-{{ alert.response_status }}">{{ alert.response_status }}</span></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7" class="empty-state">No security alerts recorded.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

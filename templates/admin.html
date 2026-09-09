@@ -1,0 +1,1256 @@
+{% extends "soc_base.html" %}
+
+{% block title %}Administration - CyberLab SOC{% endblock %}
+
+{% block page_label %}Administration{% endblock %}
+
+{% block content %}
+
+<div class="admin-page">
+
+    <!-- =====================================================
+         ADMIN PAGE HEADER
+         ===================================================== -->
+
+    <div class="soc-page-heading">
+
+        <div>
+
+            <div class="eyebrow">
+                APPLICATION / ADMINISTRATION
+            </div>
+
+            <h1>
+                Admin Panel
+            </h1>
+
+            <p>
+                Administrative functions for the CyberLab
+                security-testing application.
+            </p>
+
+        </div>
+
+
+        <div class="admin-privileged-badge">
+
+            <span class="privileged-dot"></span>
+
+            PRIVILEGED AREA
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACCESS DENIED
+         ===================================================== -->
+
+    {% if denied %}
+
+    <div class="admin-denied">
+
+        <div class="admin-denied-icon">
+            !
+        </div>
+
+        <div>
+
+            <strong>
+                Access Denied
+            </strong>
+
+            <p>
+                {{ reason }}
+            </p>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+
+    <!-- =====================================================
+         SECURITY MODE WARNING
+         ===================================================== -->
+
+    {% if not secure_mode %}
+
+    <div class="admin-warning-banner">
+
+        <strong>
+            Insecure mode:
+        </strong>
+
+        this panel has
+        <strong>
+            no access control at all
+        </strong>
+        — anyone can open it.
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         ADMIN CARDS
+         ===================================================== -->
+
+    <div class="admin-card-grid">
+
+
+        <!-- =================================================
+             USER MANAGEMENT CARD
+             ================================================= -->
+
+        <div class="admin-card">
+
+            <div class="admin-card-icon">
+                ◎
+            </div>
+
+            <div class="admin-card-kicker">
+                USER MANAGEMENT
+            </div>
+
+            <h2>
+                Users
+            </h2>
+
+            <p>
+                Manage application users.
+            </p>
+
+
+            <button
+                type="button"
+                class="admin-card-button"
+                onclick="showUserManagement()"
+            >
+                Manage Users
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             SYSTEM CARD
+             ================================================= -->
+
+        <div class="admin-card">
+
+            <div class="admin-card-icon">
+                ▣
+            </div>
+
+            <div class="admin-card-kicker">
+                SYSTEM
+            </div>
+
+            <h2>
+                System
+            </h2>
+
+            <p>
+                View system information.
+            </p>
+
+
+            <button
+                type="button"
+                class="admin-card-button"
+                onclick="showSystemInformation()"
+            >
+                View Information
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SYSTEM INFORMATION
+         Hidden until View Information is clicked
+         ===================================================== -->
+
+    <section
+        id="system-information"
+        class="system-information"
+        style="display: none;"
+    >
+
+        <div class="system-information-header">
+
+            <div>
+
+                <div class="eyebrow">
+                    SYSTEM
+                </div>
+
+                <h2>
+                    System Information
+                </h2>
+
+                <p>
+                    CyberLab application and security configuration.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="admin-close-button"
+                onclick="hideSystemInformation()"
+            >
+                Close
+            </button>
+
+        </div>
+
+
+        <div class="system-information-grid">
+
+            <div class="system-info-card">
+
+                <span>
+                    APPLICATION
+                </span>
+
+                <strong>
+                    CyberLab SOC
+                </strong>
+
+            </div>
+
+
+            <div class="system-info-card">
+
+                <span>
+                    SECURITY MODE
+                </span>
+
+                <strong>
+                    {% if secure_mode %}
+                        Secure
+                    {% else %}
+                        Insecure / Vulnerable
+                    {% endif %}
+                </strong>
+
+            </div>
+
+
+            <div class="system-info-card">
+
+                <span>
+                    DATABASE
+                </span>
+
+                <strong>
+                    SQLite
+                </strong>
+
+            </div>
+
+
+            <div class="system-info-card">
+
+                <span>
+                    ENVIRONMENT
+                </span>
+
+                <strong>
+                    CyberLab Demo
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TEAM MANAGEMENT
+         Image 1 layout
+         ===================================================== -->
+
+    <section
+        id="user-management"
+        class="team-management"
+        style="display: none;"
+    >
+
+
+        <!-- =================================================
+             TEAM MANAGEMENT HEADER
+             ================================================= -->
+
+        <div class="team-page-header">
+
+            <div>
+
+                <h2>
+                    Team Management
+                </h2>
+
+                <p>
+                    Manage CyberLab users, roles and account information.
+                </p>
+
+            </div>
+
+
+            <div class="team-header-actions">
+
+                <button
+                    type="button"
+                    class="team-add-button"
+                    onclick="showAddUserForm()"
+                >
+
+                    <span>
+                        +
+                    </span>
+
+                    Add User
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="team-close-button"
+                    onclick="hideUserManagement()"
+                >
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TWO COLUMN DASHBOARD
+             ================================================= -->
+
+        <div class="team-dashboard-grid">
+
+
+            <!-- =================================================
+                 LEFT COLUMN
+                 TEAM MEMBERS
+                 ================================================= -->
+
+            <div class="team-members-panel">
+
+
+                <!-- TEAM MEMBERS HEADER -->
+
+                <div class="team-members-header">
+
+                    <div class="team-title">
+
+                        <span class="team-title-icon">
+                            ♧
+                        </span>
+
+                        <strong>
+                            Team Members
+                        </strong>
+
+                    </div>
+
+
+                    <!-- SEARCH -->
+
+                    <div class="team-search">
+
+                        <span>
+                            ⌕
+                        </span>
+
+                        <input
+                            type="text"
+                            id="userSearch"
+                            placeholder="Search users..."
+                            autocomplete="off"
+                            onkeyup="filterUsers()"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     FILTER TOOLBAR
+                     ================================================= -->
+
+                <div class="team-toolbar">
+
+                    <button
+                        type="button"
+                        class="team-filter-button"
+                        onclick="toggleRoleFilter()"
+                    >
+
+                        <span>
+                            ♢
+                        </span>
+
+                        Filters
+
+                    </button>
+
+
+                    <select
+                        id="roleFilter"
+                        class="role-filter"
+                        onchange="filterUsers()"
+                    >
+
+                        <option value="">
+                            All roles
+                        </option>
+
+
+                        {% for role in roles %}
+
+                        <option
+                            value="{{ role['role'] }}"
+                        >
+                            {{ role['role'] }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- =================================================
+                     TEAM MEMBERS TABLE
+                     ================================================= -->
+
+                <div class="team-table-container">
+
+                    <table
+                        class="team-management-table"
+                        id="teamTable"
+                    >
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    USER
+                                </th>
+
+                                <th>
+                                    ROLE
+                                </th>
+
+                                <th>
+                                    STATUS
+                                </th>
+
+                                <th>
+                                    MFA
+                                </th>
+
+                                <th>
+                                    LAST LOGIN
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            {% for user in users %}
+
+
+                            <tr
+                                data-role="{{ user.role or '' }}"
+                                data-search="{{ user.username }} {{ user.full_name or '' }} {{ user.email }} {{ user.role or '' }}"
+                            >
+
+
+                                <!-- USER -->
+
+                                <td>
+
+                                    <div class="team-user-cell">
+
+
+                                        <div class="team-user-avatar">
+
+                                            {% if user.full_name %}
+
+                                                {{ user.full_name[:2]|upper }}
+
+                                            {% else %}
+
+                                                {{ user.username[:2]|upper }}
+
+                                            {% endif %}
+
+                                        </div>
+
+
+                                        <div class="team-user-details">
+
+                                            <strong>
+
+                                                {% if user.full_name %}
+
+                                                    {{ user.full_name }}
+
+                                                {% else %}
+
+                                                    {{ user.username }}
+
+                                                {% endif %}
+
+                                            </strong>
+
+
+                                            <span>
+                                                {{ user.email }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- ROLE -->
+
+                                <td>
+
+                                    <span class="team-role-badge">
+
+                                        {{ user.role or "Unassigned" }}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    <span class="team-active-status">
+
+                                        <span class="team-status-dot"></span>
+
+                                        active
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- MFA -->
+
+                                <td>
+
+                                    <span class="team-mfa-status">
+
+                                        <span class="mfa-key">
+                                            ⚿
+                                        </span>
+
+                                        Not configured
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- LAST LOGIN -->
+
+                                <td>
+
+                                    {% if user.last_login %}
+
+                                        <span class="team-last-login">
+                                            {{ user.last_login }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="team-last-login">
+                                            Never
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                            </tr>
+
+
+                            {% else %}
+
+
+                            <tr>
+
+                                <td
+                                    colspan="5"
+                                    class="team-empty"
+                                >
+                                    No team members found.
+                                </td>
+
+                            </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT COLUMN
+                 STATISTICS
+                 ================================================= -->
+
+            <div class="team-stat-column">
+
+
+                <!-- TOTAL USERS -->
+
+                <div class="team-stat-box">
+
+                    <div class="team-stat-large-icon">
+                        ♧
+                    </div>
+
+                    <strong>
+                        {{ total_users }}
+                    </strong>
+
+                    <span>
+                        Total Users
+                    </span>
+
+                </div>
+
+
+                <!-- ACTIVE -->
+
+                <div class="team-stat-box">
+
+                    <div class="team-stat-large-icon active">
+                        ♢
+                    </div>
+
+                    <strong class="active-number">
+                        {{ active_users }}
+                    </strong>
+
+                    <span>
+                        Active
+                    </span>
+
+                </div>
+
+
+                <!-- MFA -->
+
+                <div class="team-stat-box">
+
+                    <div class="team-stat-large-icon mfa">
+                        ⚿
+                    </div>
+
+                    <strong>
+                        {{ mfa_enabled }}
+                    </strong>
+
+                    <span>
+                        MFA Enabled
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             ADD USER MODAL
+             ===================================================== -->
+
+        <div
+            id="add-user-panel"
+            class="add-user-overlay"
+            style="display: none;"
+        >
+
+
+            <div class="add-user-modal">
+
+
+                <!-- MODAL HEADER -->
+
+                <div class="add-user-modal-header">
+
+                    <div>
+
+                        <span class="panel-kicker">
+                            ACCOUNT PROVISIONING
+                        </span>
+
+                        <h3>
+                            Add User
+                        </h3>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="modal-close"
+                        onclick="hideAddUserForm()"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <!-- FORM -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for('admin_add_user') }}"
+                    class="team-add-form"
+                >
+
+
+                    <div class="team-form-grid">
+
+
+                        <!-- FULL NAME -->
+
+                        <div>
+
+                            <label>
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                name="full_name"
+                                placeholder="John Smith"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- USERNAME -->
+
+                        <div>
+
+                            <label>
+                                Username
+                            </label>
+
+                            <input
+                                type="text"
+                                name="username"
+                                placeholder="john"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div>
+
+                            <label>
+                                Email
+                            </label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="john@cyberlab.local"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div>
+
+                            <label>
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- ROLE -->
+
+                        <div>
+
+                            <label>
+                                Role
+                            </label>
+
+                            <select
+                                name="role"
+                                required
+                            >
+
+                                <option value="">
+                                    Select role
+                                </option>
+
+                                <option value="SOC Analyst I">
+                                    SOC Analyst I
+                                </option>
+
+                                <option value="SOC Analyst II">
+                                    SOC Analyst II
+                                </option>
+
+                                <option value="SOC Administrator">
+                                    SOC Administrator
+                                </option>
+
+                                <option value="Security Engineer">
+                                    Security Engineer
+                                </option>
+
+                                <option value="Security Intern">
+                                    Security Intern
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- LOCATION -->
+
+                        <div>
+
+                            <label>
+                                Location
+                            </label>
+
+                            <input
+                                type="text"
+                                name="location"
+                                placeholder="Bengaluru, India"
+                            >
+
+                        </div>
+
+
+                        <!-- WEBSITE -->
+
+                        <div class="team-wide">
+
+                            <label>
+                                Website
+                            </label>
+
+                            <input
+                                type="text"
+                                name="website"
+                                placeholder="https://cyberlab.local/user"
+                            >
+
+                        </div>
+
+
+                        <!-- BIO -->
+
+                        <div class="team-wide">
+
+                            <label>
+                                Bio
+                            </label>
+
+                            <textarea
+                                name="bio"
+                                rows="3"
+                                placeholder="Short description..."
+                            ></textarea>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- FORM BUTTONS -->
+
+                    <div class="team-form-actions">
+
+                        <button
+                            type="button"
+                            class="team-secondary-button"
+                            onclick="hideAddUserForm()"
+                        >
+                            Cancel
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="team-add-button"
+                        >
+                            Create User
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+/* ============================================================
+   SHOW TEAM MANAGEMENT
+   ============================================================ */
+
+function showUserManagement() {
+
+    const section =
+        document.getElementById("user-management");
+
+    if (!section) {
+        return;
+    }
+
+
+    section.style.display = "block";
+
+
+    setTimeout(function () {
+
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }, 50);
+
+}
+
+
+/* ============================================================
+   HIDE TEAM MANAGEMENT
+   ============================================================ */
+
+function hideUserManagement() {
+
+    const section =
+        document.getElementById("user-management");
+
+    if (!section) {
+        return;
+    }
+
+
+    section.style.display = "none";
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* ============================================================
+   ADD USER MODAL
+   ============================================================ */
+
+function showAddUserForm() {
+
+    const panel =
+        document.getElementById("add-user-panel");
+
+    if (!panel) {
+        return;
+    }
+
+
+    panel.style.display = "flex";
+
+}
+
+
+function hideAddUserForm() {
+
+    const panel =
+        document.getElementById("add-user-panel");
+
+    if (!panel) {
+        return;
+    }
+
+
+    panel.style.display = "none";
+
+}
+
+
+/* ============================================================
+   ROLE FILTER
+   ============================================================ */
+
+function toggleRoleFilter() {
+
+    const filter =
+        document.getElementById("roleFilter");
+
+    if (!filter) {
+        return;
+    }
+
+
+    if (filter.style.display === "inline-block") {
+
+        filter.style.display = "none";
+
+    } else {
+
+        filter.style.display = "inline-block";
+
+    }
+
+}
+
+
+/* ============================================================
+   LIVE USER SEARCH
+   ============================================================ */
+
+function filterUsers() {
+
+    const searchInput =
+        document.getElementById("userSearch");
+
+    const roleFilter =
+        document.getElementById("roleFilter");
+
+    const table =
+        document.getElementById("teamTable");
+
+
+    if (!table) {
+        return;
+    }
+
+
+    const search =
+        searchInput
+            ? searchInput.value.toLowerCase().trim()
+            : "";
+
+
+    const role =
+        roleFilter
+            ? roleFilter.value.toLowerCase().trim()
+            : "";
+
+
+    const rows =
+        table.querySelectorAll("tbody tr");
+
+
+    rows.forEach(function(row) {
+
+        const rowSearch =
+            (row.dataset.search || "").toLowerCase();
+
+
+        const rowRole =
+            (row.dataset.role || "").toLowerCase();
+
+
+        const matchesSearch =
+            !search ||
+            rowSearch.includes(search);
+
+
+        const matchesRole =
+            !role ||
+            rowRole === role;
+
+
+        if (
+            matchesSearch &&
+            matchesRole
+        ) {
+
+            row.style.display = "";
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* ============================================================
+   SYSTEM INFORMATION
+   ============================================================ */
+
+function showSystemInformation() {
+
+    const section =
+        document.getElementById("system-information");
+
+
+    if (!section) {
+        return;
+    }
+
+
+    section.style.display = "block";
+
+
+    setTimeout(function() {
+
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }, 50);
+
+}
+
+
+function hideSystemInformation() {
+
+    const section =
+        document.getElementById("system-information");
+
+
+    if (!section) {
+        return;
+    }
+
+
+    section.style.display = "none";
+
+}
+
+
+/* ============================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+   ============================================================ */
+
+const addUserPanel =
+    document.getElementById("add-user-panel");
+
+
+if (addUserPanel) {
+
+    addUserPanel.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === addUserPanel
+            ) {
+
+                hideAddUserForm();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   ESC KEY
+   ============================================================ */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            hideAddUserForm();
+
+        }
+
+    }
+);
+
+</script>
+
+{% endblock %}

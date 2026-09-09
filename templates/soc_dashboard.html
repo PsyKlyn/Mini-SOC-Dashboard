@@ -1,0 +1,138 @@
+{% extends "soc_base.html" %}
+{% set active_page = 'dashboard' %}
+{% block title %}SOC Dashboard - CyberLab{% endblock %}
+{% block page_label %}Overview{% endblock %}
+
+{% block content %}
+<div class="soc-page-heading">
+    <div>
+        <div class="eyebrow">SECURITY OPERATIONS CENTER</div>
+        <h1>Security Operations Dashboard</h1>
+        <p>Live view of everything the CyberLab honeypot application detects. All addresses shown are fictional demo data.</p>
+    </div>
+    <div class="heading-status"><span></span> SYSTEM OPERATIONAL</div>
+</div>
+
+<div class="soc-actions">
+    <form method="POST" action="/mode">
+        {% if secure_mode %}
+            <button type="submit" name="mode" value="insecure" class="btn-warn">Switch to insecure (vulnerable) mode</button>
+        {% else %}
+            <button type="submit" name="mode" value="secure" class="btn-ok">Switch to secure mode (fixed)</button>
+        {% endif %}
+    </form>
+
+    <form method="POST" action="/soc/simulate-scan">
+        <input type="text" name="ip" placeholder="203.0.113.77" value="203.0.113.77" class="soc-ip">
+        <button type="submit" class="btn-danger">Simulate port scan</button>
+    </form>
+</div>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="soc-flash">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="soc-stats">
+    <div class="stat">
+        <span class="stat-icon">≡</span>
+        <span class="stat-number" id="stat-events">{{ events }}</span>
+        <span class="stat-label">Events</span>
+        <span class="stat-caption">Recorded activity</span>
+    </div>
+    <div class="stat">
+        <span class="stat-icon">!</span>
+        <span class="stat-number" id="stat-alerts">{{ alerts }}</span>
+        <span class="stat-label">Alerts</span>
+        <span class="stat-caption">Detected threats</span>
+    </div>
+    <div class="stat stat-open">
+        <span class="stat-icon">◌</span>
+        <span class="stat-number" id="stat-open">{{ open_alerts }}</span>
+        <span class="stat-label">Open</span>
+        <span class="stat-caption">Needs attention</span>
+    </div>
+    <div class="stat stat-blocked">
+        <span class="stat-icon">⊘</span>
+        <span class="stat-number" id="stat-blocked">{{ blocked }}</span>
+        <span class="stat-label">Blocked IPs</span>
+        <span class="stat-caption">Active controls</span>
+    </div>
+</div>
+
+<div class="soc-grid">
+    <div class="soc-panel">
+        <div class="panel-header">
+            <div><span class="panel-kicker">THREAT MONITORING</span><h3>Recent alerts</h3></div>
+            <a class="panel-link" href="/soc/alerts">View all →</a>
+        </div>
+        <div class="table-scroll">
+            <table id="recent-alerts-table">
+                <thead><tr><th>Time</th><th>Type</th><th>Severity</th><th>Source</th><th>Response</th></tr></thead>
+                <tbody id="recent-alerts-body">
+                {% for alert in recent_alerts %}
+                    <tr>
+                        <td>{{ alert.timestamp|clock12 }}</td>
+                        <td><a href="/soc/alert/{{ alert.id }}">{{ alert.alert_type }}</a></td>
+                        <td><span class="sev sev-{{ alert.severity|lower }}">{{ alert.severity }}</span></td>
+                        <td>{{ alert.source_ip }}</td>
+                        <td>{{ alert.response_status }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="soc-panel">
+        <div class="panel-header">
+            <div><span class="panel-kicker">ACTIVITY STREAM</span><h3>Latest events</h3></div>
+            <a class="panel-link" href="/soc/events">View all →</a>
+        </div>
+        <div class="table-scroll">
+            <table>
+                <thead><tr><th>Time</th><th>Event</th><th>Source</th><th>Details</th></tr></thead>
+                <tbody>
+                {% for event in recent_events %}
+                    <tr>
+                        <td>{{ event.timestamp|clock12 }}</td>
+                        <td>{{ event.event_type }}</td>
+                        <td>{{ event.source_ip }}</td>
+                        <td class="td-details">{{ event.details }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="soc-panel">
+    <div class="panel-header">
+        <div><span class="panel-kicker">AUTOMATION</span><h3>Automated responses</h3></div>
+        <a class="panel-link" href="/soc/responses">Response log &amp; blocklist →</a>
+    </div>
+    <div class="table-scroll">
+        <table>
+            <thead><tr><th>Time</th><th>Alert</th><th>Source</th><th>Action taken</th></tr></thead>
+            <tbody>
+            {% for alert in responses %}
+                <tr>
+                    <td>{{ alert.timestamp|clock12 }}</td>
+                    <td>{{ alert.alert_type }}</td>
+                    <td>{{ alert.source_ip }}</td>
+                    <td>{{ alert.response_status }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+{% endblock %}

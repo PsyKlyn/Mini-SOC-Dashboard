@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CyberLab SOC{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='soc.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='soc_shell.css') }}">
+</head>
+<body class="{% block body_class %}soc-page{% endblock %}">
+<div class="soc-layout">
+
+    <aside class="soc-sidebar">
+        <a class="sidebar-brand" href="/soc">
+            <span class="brand-mark">C</span>
+            <span class="brand-copy">
+                <strong>CyberLab</strong>
+                <small>SOC CONSOLE</small>
+            </span>
+        </a>
+
+        <div class="soc-status-card">
+            <span class="status-dot"></span>
+            <div>
+                <strong>SOC ONLINE</strong>
+                <small>Detection engine active</small>
+            </div>
+        </div>
+
+        <nav class="soc-sidebar-nav">
+
+    <div class="sidebar-section-title">MONITORING</div>
+
+
+    <!-- OVERVIEW -->
+   <a
+    href="/soc"
+    class="{% if active_page == 'dashboard' %}active{% endif %}"
+>
+    <span class="nav-icon">⌂</span>
+
+    <span>Overview</span>
+
+    {% if notification_overview > 0 %}
+
+        <span class="soc-notification-badge">
+            {{ notification_overview }}
+        </span>
+
+    {% endif %}
+
+</a>
+
+
+    <!-- ALERTS -->
+    <a
+    href="/soc/alerts"
+    class="{% if active_page == 'alerts' or active_page == 'alert-detail' %}active{% endif %}"
+>
+
+    <span class="nav-icon">!</span>
+
+    <span>Alerts</span>
+
+    {% if notification_alerts > 0 %}
+
+        <span class="soc-notification-badge">
+            {{ notification_alerts }}
+        </span>
+
+    {% endif %}
+
+    {% if active_page == 'alerts' %}
+        <span class="nav-arrow">›</span>
+    {% endif %}
+
+</a>
+
+
+    <!-- EVENTS -->
+    <a
+    href="/soc/events"
+    class="{% if active_page == 'events' %}active{% endif %}"
+>
+
+    <span class="nav-icon">≡</span>
+
+    <span>Events</span>
+
+    {% if notification_events > 0 %}
+
+        <span class="soc-notification-badge">
+            {{ notification_events }}
+        </span>
+
+    {% endif %}
+
+</a>
+
+
+    <!-- RESPONSES -->
+    <a
+    href="/soc/responses"
+    class="{% if active_page == 'responses' %}active{% endif %}"
+>
+
+    <span class="nav-icon">↯</span>
+
+    <span>Responses</span>
+
+    {% if notification_responses > 0 %}
+
+        <span class="soc-notification-badge">
+            {{ notification_responses }}
+        </span>
+
+    {% endif %}
+
+</a>
+
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section-title">APPLICATION</div>
+
+
+    <!-- CYBERLAB APP -->
+    <a href="/"
+       class="{% if active_page == 'app' %}active{% endif %}">
+
+        <span class="nav-icon">⌂</span>
+        <span>CyberLab App</span>
+
+    </a>
+
+
+    <!-- SEARCH -->
+    <a href="/search"
+       class="{% if active_page == 'search' %}active{% endif %}">
+
+        <span class="nav-icon">⌕</span>
+        <span>Search</span>
+
+    </a>
+
+
+    <!-- LOGIN -->
+    <a href="/login"
+       class="{% if active_page == 'login' %}active{% endif %}">
+
+        <span class="nav-icon">⇥</span>
+        <span>Login</span>
+
+    </a>
+
+
+    <!-- PROFILE -->
+    <a href="/profile"
+       class="{% if active_page == 'profile' %}active{% endif %}">
+
+        <span class="nav-icon">◉</span>
+        <span>Profile</span>
+
+    </a>
+
+
+    <!-- ADMIN -->
+    <a href="/admin"
+       class="{% if active_page == 'admin' %}active{% endif %}">
+
+        <span class="nav-icon">⚙</span>
+        <span>Admin</span>
+
+    </a>
+
+
+    <!-- LOGOUT -->
+    <a href="/logout"
+       class="sidebar-logout">
+
+        <span class="nav-icon">↪</span>
+        <span>Logout</span>
+
+    </a>
+
+</nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-mode">
+                <span class="mode-dot {% if mode_class == 'secure' %}secure{% else %}insecure{% endif %}"></span>
+                <div>
+                    <small>SECURITY MODE</small>
+                    <strong>{{ mode_badge }}</strong>
+                </div>
+            </div>
+            <a class="sidebar-exit" href="/">← Return to app</a>
+        </div>
+    </aside>
+
+    <section class="soc-main">
+        <header class="soc-topbar">
+            <div class="topbar-title">
+                <span class="topbar-kicker">CYBERLAB / SECURITY OPERATIONS</span>
+                <span class="topbar-page">{% block page_label %}SOC Console{% endblock %}</span>
+            </div>
+
+            <div class="topbar-tools">
+                <a class="top-search" href="/search" aria-label="Open product search">
+                    <span>⌕</span>
+                    <span>Search application</span>
+                    <kbd>/</kbd>
+                </a>
+                <span class="live-indicator"><i></i> LIVE MONITORING</span>
+                <span class="top-clock" id="soc-clock">--:--:--</span>
+            </div>
+        </header>
+
+        <main class="soc-content">
+            {% block content %}{% endblock %}
+        </main>
+    </section>
+</div>
+
+<script>
+(function () {
+    function tick() {
+        var el = document.getElementById("soc-clock");
+        if (!el) return;
+        el.textContent = new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false
+        });
+    }
+    tick();
+    setInterval(tick, 1000);
+})();
+
+async function updateNotifications() {
+    try {
+        const response = await fetch('/api/soc/notifications', {
+            cache: 'no-store'
+        });
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data = await response.json();
+
+        updateBadge('overview', data.overview);
+        updateBadge('alerts', data.alerts);
+        updateBadge('events', data.events);
+        updateBadge('responses', data.responses);
+
+    } catch (error) {
+        console.log('Notification update failed:', error);
+    }
+}
+
+
+function updateBadge(type, count) {
+
+    const link = document.querySelector(
+        `.soc-sidebar-nav a[data-notification="${type}"]`
+    );
+
+    if (!link) {
+        return;
+    }
+
+    let badge = link.querySelector('.soc-notification-badge');
+
+    /*
+     * Create the badge if it doesn't already exist.
+     */
+    if (!badge) {
+
+        badge = document.createElement('span');
+
+        badge.className = 'soc-notification-badge';
+
+        link.appendChild(badge);
+    }
+
+    /*
+     * Hide badge when there is nothing to show.
+     */
+    if (count <= 0) {
+        badge.style.display = 'none';
+        return;
+    }
+
+    badge.style.display = 'inline-flex';
+    badge.textContent = count;
+}
+
+
+/*
+ * Initial update immediately.
+ */
+updateNotifications();
+
+
+/*
+ * Check every second.
+ */
+setInterval(updateNotifications, 1000);
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

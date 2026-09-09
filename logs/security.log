@@ -1,0 +1,144 @@
+2026-09-04 18:02:29 [INFO] Security log started - CyberLab vulnerable web app
+2026-09-04 18:03:10 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:03:10 [INFO] Detection engine started (every 2s)
+2026-09-04 18:03:11 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:03:11 [INFO] Detection engine started (every 2s)
+2026-09-04 18:03:30 [RESPONSE] SQL INJECTION from 192.168.0.117 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' --]
+2026-09-04 18:04:27 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-04 18:04:27 [RESPONSE] PORT SCAN from 203.0.113.77 -> blocklisted [Source contacted 5 different honeypot port(s): 9101, 9102, 9103, 9104, 9105]
+2026-09-04 18:06:19 [RESPONSE] BROKEN ACCESS CONTROL from 192.168.0.117 -> suspicious_logged [User with session id 1 requested profile of user id 2 (unauthorized access).]
+2026-09-04 18:19:10 [RESPONSE] BRUTE FORCE from 192.168.0.117 -> rate_limited [20 failed login attempts from this IP within 2 minute(s).]
+2026-09-04 18:22:42 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:22:42 [INFO] Detection engine started (every 2s)
+2026-09-04 18:22:56 [RESPONSE] BRUTE FORCE from 192.168.0.117 -> rate_limited [7 failed login attempts from this IP within 2 minute(s).]
+2026-09-04 18:23:45 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:23:45 [INFO] Detection engine started (every 2s)
+2026-09-04 18:28:54 [RESPONSE] BRUTE FORCE from 192.168.0.117 -> rate_limited [24 failed login attempts from this IP within 2 minute(s).]
+2026-09-04 18:33:11 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:33:11 [INFO] Detection engine started (every 2s)
+2026-09-04 18:33:11 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:33:11 [INFO] Detection engine started (every 2s)
+2026-09-04 18:37:23 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:37:23 [INFO] Detection engine started (every 2s)
+2026-09-04 18:38:37 [RESPONSE] BRUTE FORCE from 192.168.0.117 -> rate_limited [5 failed login attempts from this IP within 2 minute(s).]
+2026-09-04 18:39:15 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-04 18:39:15 [RESPONSE] PORT SCAN from 203.0.113.77 -> blocklisted [Source contacted 5 different honeypot port(s): 9101, 9102, 9103, 9104, 9105]
+2026-09-04 18:49:09 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:49:09 [INFO] Detection engine started (every 2s)
+2026-09-04 18:49:09 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:49:09 [INFO] Detection engine started (every 2s)
+2026-09-04 18:52:23 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:52:23 [INFO] Detection engine started (every 2s)
+2026-09-04 18:55:08 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:55:08 [INFO] Detection engine started (every 2s)
+2026-09-04 18:55:36 [RESPONSE] SQL INJECTION from 192.168.0.117 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' --]
+2026-09-04 18:56:44 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:56:44 [INFO] Detection engine started (every 2s)
+2026-09-04 18:56:44 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:56:44 [INFO] Detection engine started (every 2s)
+2026-09-04 18:57:50 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:57:50 [INFO] Detection engine started (every 2s)
+2026-09-04 18:57:50 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-04 18:57:50 [INFO] Detection engine started (every 2s)
+2026-09-04 18:58:20 [RESPONSE] SQL INJECTION from 192.168.0.117 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' --]
+2026-09-04 18:59:08 [RESPONSE] PORT SCAN from 203.0.113.77 -> blocklisted [Source contacted 4 different honeypot port(s): 9101, 9102, 9103, 9104]
+2026-09-04 18:59:08 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-05 00:31:36 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 00:31:36 [INFO] Detection engine started (every 2s)
+2026-09-05 00:34:43 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 00:34:43 [INFO] Detection engine started (every 2s)
+2026-09-05 00:38:00 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-05 00:38:00 [RESPONSE] PORT SCAN from 203.0.113.77 -> blocklisted [Source contacted 5 different honeypot port(s): 9101, 9102, 9103, 9104, 9105]
+2026-09-05 00:38:08 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-05 00:38:31 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-05 00:40:32 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 00:40:32 [INFO] Detection engine started (every 2s)
+2026-09-04 19:10:39 [RESPONSE] BROKEN ACCESS CONTROL from 127.0.0.1 -> suspicious_logged [User with session id 1 requested profile of user id 2 (unauthorized access).]
+2026-09-04 19:11:41 [RESPONSE] BROKEN ACCESS CONTROL from 192.168.0.117 -> suspicious_logged [User with session id 2 requested profile of user id 1 (unauthorized access).]
+2026-09-05 00:44:33 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 00:44:33 [INFO] Detection engine started (every 2s)
+2026-09-05 00:45:07 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 00:45:07 [INFO] Detection engine started (every 2s)
+2026-09-05 00:48:32 [RESPONSE] BROKEN ACCESS CONTROL from 127.0.0.1 -> suspicious_logged [User with session id 1 requested profile of user id 2 (unauthorized access).]
+2026-09-05 00:49:26 [RESPONSE] BROKEN ACCESS CONTROL from 192.168.0.117 -> suspicious_logged [User with session id 2 requested profile of user id 1 (unauthorized access).]
+2026-09-05 00:56:47 [RESPONSE] BROKEN ACCESS CONTROL from 127.0.0.1 -> suspicious_logged [User with session id 2 requested profile of user id 1 (unauthorized access).]
+2026-09-05 01:19:57 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-05 01:19:57 [RESPONSE] PORT SCAN from 203.0.113.77 -> blocklisted [Source contacted 5 different honeypot port(s): 9101, 9102, 9103, 9104, 9105]
+2026-09-05 02:38:15 [RESPONSE] SQL INJECTION from 192.168.0.117 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' --]
+2026-09-05 02:42:50 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 02:42:50 [INFO] Detection engine started (every 2s)
+2026-09-05 02:59:44 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 02:59:44 [INFO] Detection engine started (every 2s)
+2026-09-05 03:38:02 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 03:38:02 [INFO] Detection engine started (every 2s)
+2026-09-05 03:42:59 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 03:42:59 [INFO] Detection engine started (every 2s)
+2026-09-05 03:46:03 [RESPONSE] SQL INJECTION from 192.168.0.117 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' --]
+2026-09-05 03:47:35 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 03:47:35 [INFO] Detection engine started (every 2s)
+2026-09-05 03:51:55 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 03:51:55 [INFO] Detection engine started (every 2s)
+2026-09-05 03:52:53 [RESPONSE] SQL INJECTION from 192.168.0.117 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' --]
+2026-09-05 03:54:33 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-05 03:54:33 [RESPONSE] PORT SCAN from 203.0.113.77 -> blocklisted [Source contacted 5 different honeypot port(s): 9101, 9102, 9103, 9104, 9105]
+2026-09-05 13:58:42 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 13:58:42 [INFO] Detection engine started (every 2s)
+2026-09-05 13:58:42 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 13:58:42 [INFO] Detection engine started (every 2s)
+2026-09-05 13:58:53 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 13:58:53 [INFO] Detection engine started (every 2s)
+2026-09-05 13:58:53 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 13:58:53 [INFO] Detection engine started (every 2s)
+2026-09-05 13:59:02 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 13:59:02 [INFO] Detection engine started (every 2s)
+2026-09-05 13:59:02 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 13:59:02 [INFO] Detection engine started (every 2s)
+2026-09-05 13:59:38 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 13:59:38 [INFO] Detection engine started (every 2s)
+2026-09-05 13:59:38 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 13:59:38 [INFO] Detection engine started (every 2s)
+2026-09-05 13:59:46 [INFO] Simulated scan started from 203.0.113.77 over 5 port(s)
+2026-09-05 13:59:46 [RESPONSE] PORT SCAN from 203.0.113.77 -> blocklisted [Source contacted 5 different honeypot port(s): 9101, 9102, 9103, 9104, 9105]
+2026-09-05 14:02:07 [RESPONSE] SQL INJECTION from 127.0.0.1 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' -- ]
+2026-09-05 14:06:04 [RESPONSE] SQL INJECTION from 127.0.0.1 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' -- ]
+2026-09-05 14:12:25 [RESPONSE] SQL INJECTION from 127.0.0.1 -> suspicious_logged [Suspicious SQL pattern 'union select' in request value ' UNION SELECT 1,username,password FROM users -- ]
+2026-09-05 14:12:25 [RESPONSE] BROKEN ACCESS CONTROL from 127.0.0.1 -> suspicious_logged [User with session id 1 requested profile of user id 2 (unauthorized access).]
+2026-09-05 14:12:38 [RESPONSE] BRUTE FORCE from 127.0.0.1 -> rate_limited [7 failed login attempts from this IP within 2 minute(s).]
+2026-09-05 14:43:51 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 14:43:51 [INFO] Detection engine started (every 2s)
+2026-09-05 14:43:51 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 14:43:51 [INFO] Detection engine started (every 2s)
+2026-09-05 14:44:25 [RESPONSE] SQL INJECTION from 192.168.0.107 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' --]
+2026-09-05 14:55:50 [RESPONSE] SQL INJECTION from 192.168.0.107 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' --]
+2026-09-05 15:01:54 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-05 15:01:54 [INFO] Detection engine started (every 2s)
+2026-09-05 15:06:17 [RESPONSE] BRUTE FORCE from 192.168.0.107 -> rate_limited [5 failed login attempts from this IP within 2 minute(s).]
+2026-09-05 19:02:14 [RESPONSE] BROKEN ACCESS CONTROL from 192.168.0.107 -> suspicious_logged [User with session id 2 requested profile of user id 1 (unauthorized access).]
+2026-09-06 15:32:05 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 15:32:05 [INFO] Detection engine started (every 2s)
+2026-09-06 15:32:05 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 15:32:05 [INFO] Detection engine started (every 2s)
+2026-09-06 15:32:23 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 15:32:23 [INFO] Detection engine started (every 2s)
+2026-09-06 15:32:24 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 15:32:24 [INFO] Detection engine started (every 2s)
+2026-09-06 15:32:35 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 15:32:35 [INFO] Detection engine started (every 2s)
+2026-09-06 15:32:36 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 15:32:36 [INFO] Detection engine started (every 2s)
+2026-09-06 15:36:35 [RESPONSE] SQL INJECTION from 127.0.0.1 -> suspicious_logged [Suspicious SQL pattern 'or '1'='1' in request value ' OR '1'='1' -- ]
+2026-09-06 16:16:49 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 16:16:49 [INFO] Detection engine started (every 2s)
+2026-09-06 16:16:49 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 16:16:49 [INFO] Detection engine started (every 2s)
+2026-09-06 16:17:49 [RESPONSE] BROKEN ACCESS CONTROL from 192.168.0.112 -> suspicious_logged [User with session id 2 requested profile of user id 1 (unauthorized access).]
+2026-09-06 16:22:13 [RESPONSE] BROKEN ACCESS CONTROL from 192.168.0.112 -> suspicious_logged [User with session id 2 requested profile of user id 5 (unauthorized access).]
+2026-09-06 16:23:31 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 16:23:31 [INFO] Detection engine started (every 2s)
+2026-09-06 16:23:41 [RESPONSE] BROKEN ACCESS CONTROL from 192.168.0.112 -> suspicious_logged [User with session id 2 requested profile of user id 5 (unauthorized access).]
+2026-09-06 17:51:59 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 17:51:59 [INFO] Detection engine started (every 2s)
+2026-09-06 17:51:59 [INFO] Honeypot listeners started on ports 9101, 9102, 9103, 9104, 9105
+2026-09-06 17:51:59 [INFO] Detection engine started (every 2s)
+2026-09-06 17:53:37 [RESPONSE] BROKEN ACCESS CONTROL from 127.0.0.1 -> suspicious_logged [User with session id 1 requested profile of user id 2 (unauthorized access).]
+2026-09-06 17:54:49 [RESPONSE] BROKEN ACCESS CONTROL from 127.0.0.1 -> suspicious_logged [User with session id 1 requested profile of user id 2 (unauthorized access).]

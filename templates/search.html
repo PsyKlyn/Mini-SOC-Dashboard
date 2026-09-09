@@ -1,0 +1,45 @@
+{% extends "soc_base.html" %}
+{% set active_page = 'search' %}
+{% block title %}Search - CyberLab{% endblock %}
+{% block page_label %}Product Search{% endblock %}
+
+{% block content %}
+<div class="soc-page-heading">
+    <div>
+        <div class="eyebrow">APPLICATION / PRODUCT CATALOG</div>
+        <h1>Product Search</h1>
+        <p>Search the CyberLab product catalog. In insecure mode, this endpoint is intentionally vulnerable for the security demonstration.</p>
+    </div>
+</div>
+
+<div class="app-form-panel">
+    <form method="GET" class="app-search-form">
+        <label for="product-search">Search products</label>
+        <div class="app-search-row">
+            <input id="product-search" type="text" name="q" placeholder="Search products..." value="{{ query or '' }}">
+            <button type="submit">Search</button>
+        </div>
+    </form>
+</div>
+
+{% if not secure_mode %}
+    <div class="soc-flash warning-flash">
+        Insecure mode: try <strong>' OR '1'='1' --</strong> as a search query and watch the SOC detect the SQL injection.
+    </div>
+{% endif %}
+
+{% if results %}
+    <div class="content-section-title"><span>SEARCH RESULTS</span><strong>{{ results|length }} found</strong></div>
+    <div class="product-result-grid">
+    {% for product in results %}
+        <div class="app-product-card">
+            <span class="result-index">RESULT {{ loop.index }}</span>
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+        </div>
+    {% endfor %}
+    </div>
+{% elif query %}
+    <div class="empty-app-state">No products found for "{{ query }}".</div>
+{% endif %}
+{% endblock %}

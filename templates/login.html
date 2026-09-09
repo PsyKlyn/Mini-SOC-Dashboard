@@ -1,0 +1,53 @@
+{% extends "soc_base.html" %}
+{% set active_page = 'login' %}
+{% block title %}Login - CyberLab{% endblock %}
+{% block page_label %}Authentication{% endblock %}
+
+{% block content %}
+<div class="auth-layout">
+    <div class="auth-intro">
+        <div class="eyebrow">APPLICATION / AUTHENTICATION</div>
+        <h1>CyberLab Login</h1>
+        <p>Authenticate to the CyberLab security-testing application. Login activity is recorded by the SOC monitoring engine.</p>
+
+        <div class="auth-status-list">
+            <div><span class="status-dot"></span><strong>SOC monitoring enabled</strong></div>
+            <div><span class="status-dot"></span><strong>Authentication events logged</strong></div>
+            <div><span class="status-dot {% if mode_class != 'secure' %}insecure-dot{% endif %}"></span><strong>{{ mode_badge }}</strong></div>
+        </div>
+    </div>
+
+    <div class="auth-card">
+        <div class="panel-kicker">SIGN IN</div>
+        <h2>Welcome back</h2>
+
+        {% if error_message %}
+            <div class="error-message">{{ error_message }}</div>
+        {% endif %}
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="error-message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="soc-auth-form">
+            <label>Username</label>
+            <input type="text" name="username">
+
+            <label>Password</label>
+            <input type="password" name="password">
+
+            <p class="hint">Demo account: alex / alex123</p>
+
+            <button type="submit">Login</button>
+        </form>
+
+        {% if not secure_mode %}
+            <div class="error-message auth-warning">Insecure mode: the login SQL query is built from raw user input (SQL injection demo).</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

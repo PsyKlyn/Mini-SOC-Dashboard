@@ -1,0 +1,77 @@
+{% extends "soc_base.html" %}
+{% set active_page = 'alert-detail' %}
+{% block title %}Alert {{ alert.id }} - CyberLab SOC{% endblock %}
+{% block page_label %}Alert #{{ alert.id }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="/soc/alerts">Alerts</a><span>›</span><span>Alert #{{ alert.id }}</span>
+</div>
+
+<div class="soc-page-heading compact-heading">
+    <div>
+        <div class="eyebrow">INCIDENT DETAIL / DETECTION RECORD</div>
+        <h1>Alert #{{ alert.id }} <span class="heading-separator">/</span> {{ alert.alert_type }}</h1>
+        <p>Detailed detection context and related activity from the source.</p>
+    </div>
+    <span class="sev sev-large sev-{{ alert.severity|lower }}">{{ alert.severity }}</span>
+</div>
+
+<div class="detail-grid">
+    <div class="soc-panel detail-main">
+        <div class="panel-header">
+            <div><span class="panel-kicker">DETECTION</span><h3>Alert information</h3></div>
+            <span class="detail-live">● RECORDED</span>
+        </div>
+
+        <div class="detail-facts">
+            <div><span>Severity</span><strong><span class="sev sev-{{ alert.severity|lower }}">{{ alert.severity }}</span></strong></div>
+            <div><span>Time</span><strong>{{ alert.timestamp|clock12 }}</strong></div>
+            <div><span>Source IP</span><strong class="mono">{{ alert.source_ip }}</strong></div>
+            <div><span>Endpoint</span><strong class="mono">{{ alert.endpoint }}</strong></div>
+            <div><span>Response</span><strong><span class="response-text resp-{{ alert.response_status }}">{{ alert.response_status }}</span></strong></div>
+        </div>
+
+        {% if blocked %}
+            <div class="soc-blocked-note">This IP is currently on the blocklist.</div>
+        {% endif %}
+
+        <div class="description-block">
+            <span class="panel-kicker">DESCRIPTION</span>
+            <p class="alert-description">{{ alert.description }}</p>
+        </div>
+    </div>
+
+    <div class="soc-panel detail-side">
+        <span class="panel-kicker">SOURCE</span>
+        <div class="source-ip-big">{{ alert.source_ip }}</div>
+        <div class="source-state"><span></span> Activity correlated</div>
+        <a class="detail-action" href="/soc/events">Open event log →</a>
+    </div>
+</div>
+
+<div class="soc-panel">
+    <div class="panel-header">
+        <div><span class="panel-kicker">CORRELATION</span><h3>Related activity from {{ alert.source_ip }}</h3></div>
+    </div>
+    <div class="table-scroll">
+        <table class="soc-table">
+            <thead><tr><th>Time</th><th>Event</th><th>Endpoint</th><th>Details</th></tr></thead>
+            <tbody>
+            {% for event in related %}
+                <tr>
+                    <td>{{ event.timestamp|clock12 }}</td>
+                    <td>{{ event.event_type }}</td>
+                    <td>{{ event.endpoint }}</td>
+                    <td class="td-details">{{ event.details }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4" class="empty-state">No related activity found.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<a class="soc-link back-link" href="/soc/alerts">← Back to alerts</a>
+{% endblock %}

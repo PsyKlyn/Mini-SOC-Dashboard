@@ -1,0 +1,46 @@
+{% extends "soc_base.html" %}
+{% set active_page = 'events' %}
+{% block title %}Events - CyberLab SOC{% endblock %}
+{% block page_label %}Event Log{% endblock %}
+
+{% block content %}
+<div class="soc-page-heading">
+    <div>
+        <div class="eyebrow">ACTIVITY STREAM / RAW TELEMETRY</div>
+        <h1>Event Log</h1>
+        <p>Raw activity recorded by the application. The detection engine turns suspicious events into alerts.</p>
+    </div>
+    <div class="heading-status"><span></span> LIVE FEED</div>
+</div>
+
+<div class="data-toolbar">
+    <div><strong>Application telemetry</strong><span class="toolbar-muted">Events received by the SOC detection engine</span></div>
+    <span class="record-badge">{{ events|length }} records</span>
+</div>
+
+<div class="soc-panel data-panel">
+    <div class="table-scroll">
+        <table class="soc-table">
+            <thead>
+                <tr><th>#</th><th>Time</th><th>Event</th><th>Source IP</th><th>Endpoint</th><th>Username</th><th>Details</th><th>Detection</th></tr>
+            </thead>
+            <tbody>
+            {% for event in events %}
+                <tr>
+                    <td class="mono muted">#{{ event.id }}</td>
+                    <td>{{ event.timestamp|clock12 }}</td>
+                    <td><span class="event-type">{{ event.event_type }}</span></td>
+                    <td class="mono">{{ event.source_ip }}</td>
+                    <td class="mono">{{ event.endpoint }}</td>
+                    <td>{{ event.username }}</td>
+                    <td class="td-details">{{ event.details }}</td>
+                    <td><span class="detection-status">{{ event.detection_status }}</span></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="8" class="empty-state">No events recorded.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

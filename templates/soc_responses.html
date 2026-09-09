@@ -1,0 +1,71 @@
+{% extends "soc_base.html" %}
+{% set active_page = 'responses' %}
+{% block title %}Responses - CyberLab SOC{% endblock %}
+{% block page_label %}Responses &amp; Blocklist{% endblock %}
+
+{% block content %}
+<div class="soc-page-heading">
+    <div>
+        <div class="eyebrow">AUTOMATION / RESPONSE CONTROL</div>
+        <h1>Automated Responses &amp; Blocklist</h1>
+        <p>Actions the SOC took automatically after detecting an attack.</p>
+    </div>
+    <div class="heading-status"><span class="warning"></span> RESPONSE ENGINE</div>
+</div>
+
+<div class="soc-panel">
+    <div class="panel-header">
+        <div><span class="panel-kicker">AUTOMATION LOG</span><h3>Alert responses</h3></div>
+        <span class="record-badge">{{ responses|length }} records</span>
+    </div>
+    <div class="table-scroll">
+        <table class="soc-table">
+            <thead><tr><th>#</th><th>Time</th><th>Alert</th><th>Source IP</th><th>Severity</th><th>Action taken</th></tr></thead>
+            <tbody>
+            {% for alert in responses %}
+                <tr>
+                    <td class="mono muted">#{{ alert.id }}</td>
+                    <td>{{ alert.timestamp|clock12 }}</td>
+                    <td><a class="table-link" href="/soc/alert/{{ alert.id }}">{{ alert.alert_type }}</a></td>
+                    <td class="mono">{{ alert.source_ip }}</td>
+                    <td><span class="sev sev-{{ alert.severity|lower }}">{{ alert.severity }}</span></td>
+                    <td><span class="response-text resp-{{ alert.response_status }}">{{ alert.response_status }}</span></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6" class="empty-state">No automated responses recorded.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="soc-panel">
+    <div class="panel-header">
+        <div><span class="panel-kicker">NETWORK CONTROL</span><h3>Currently blocked IPs</h3></div>
+        <span class="record-badge danger-badge">{{ blocked|length }} active</span>
+    </div>
+    <div class="table-scroll">
+        <table class="soc-table">
+            <thead><tr><th>IP</th><th>Action</th><th>Reason</th><th>Blocked at</th><th>Expires at</th><th></th></tr></thead>
+            <tbody>
+            {% for entry in blocked %}
+                <tr>
+                    <td class="mono ip-highlight">{{ entry.ip }}</td>
+                    <td>{{ entry.action }}</td>
+                    <td class="td-details">{{ entry.reason }}</td>
+                    <td>{{ entry.timestamp|clock12 }}</td>
+                    <td>{{ entry.expires_at|clock12 }}</td>
+                    <td>
+                        <form method="POST" action="/soc/unblock/{{ entry.ip }}">
+                            <button type="submit" class="btn-ok btn-small">Unblock</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6" class="empty-state">No IPs are currently blocked.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

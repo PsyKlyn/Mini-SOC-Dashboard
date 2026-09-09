@@ -1,0 +1,119 @@
+{% extends "soc_base.html" %}
+{% set active_page = 'profile' %}
+{% block title %}{{ user.full_name or user.username }} · CyberLab Profile{% endblock %}
+{% block page_label %}Analyst Profile{% endblock %}
+{% block body_class %}soc-page profile-page{% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="profile-flash">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="soc-page-heading">
+    <div>
+        <div class="eyebrow">APPLICATION / IDENTITY</div>
+        <h1>Analyst Profile</h1>
+        <p>Account information and recent security-related activity.</p>
+    </div>
+    <div class="heading-status"><span></span> IDENTITY RECORD</div>
+</div>
+
+{% if not secure_mode and viewing_self %}
+    <div class="profile-demo">
+        <strong>IDOR demo:</strong> insecure mode is on, so <code>/profile</code>
+        trusts the <code>?id=</code> parameter. Try
+        <a href="/profile?id=2">/profile?id=2</a> to read the other account's
+        profile and activity.
+    </div>
+{% elif not secure_mode and not viewing_self %}
+    <div class="profile-demo">
+        <strong>Insecure mode:</strong> you are viewing
+        <strong>{{ user.full_name or ('@' + user.username) }}</strong>'s profile
+        because <code>/profile?id={{ user.id }}</code> is trusted (IDOR).
+        In secure mode this page would always show your own profile.
+    </div>
+{% endif %}
+
+<div class="profile-card">
+    <div class="profile-cover"></div>
+    <div class="profile-head">
+        <div class="profile-avatar av{{ user.id % 4 }}">{{ initials }}</div>
+        <div class="profile-head-info">
+            <div class="profile-name">{{ user.full_name or user.username }}</div>
+            <div class="profile-handle">@{{ user.username }}</div>
+            <span class="profile-role">{{ user.role or 'Member' }}</span>
+            {% if not viewing_self %}
+                <span class="profile-role profile-role-muted">Viewing this profile</span>
+            {% endif %}
+        </div>
+        <div class="profile-head-stats">
+            <div class="pstat"><span class="pstat-num">{{ member_days }}</span><span class="pstat-label">Days on CyberLab</span></div>
+            <div class="pstat"><span class="pstat-num">{{ stats.login_count }}</span><span class="pstat-label">Sign-ins</span></div>
+            <div class="pstat"><span class="pstat-num">{{ stats.profile_opens }}</span><span class="pstat-label">Profile views</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="profile-grid">
+    <div class="profile-panel">
+        <h3>About</h3>
+        <p class="profile-bio">{{ user.bio or 'No bio yet.' }}</p>
+        <div class="profile-meta">
+            <div class="meta-row"><span class="meta-label">Location</span><span>{{ user.location or 'Not set' }}</span></div>
+            <div class="meta-row"><span class="meta-label">Website</span><span>{% if user.website %}{% if user.website.startswith('http') %}<a href="{{ user.website }}" target="_blank" rel="noopener">{{ user.website }}</a>{% else %}{{ user.website }}{% endif %}{% else %}Not set{% endif %}</span></div>
+            <div class="meta-row"><span class="meta-label">Joined</span><span>{{ user.member_since or 'Unknown' }}</span></div>
+        </div>
+    </div>
+
+    <div class="profile-panel">
+        <h3>Account</h3>
+        <div class="profile-meta">
+            <div class="meta-row"><span class="meta-label">User ID</span><span class="account-mono">#{{ user.id }}</span></div>
+            <div class="meta-row"><span class="meta-label">Username</span><span class="account-mono">@{{ user.username }}</span></div>
+            <div class="meta-row"><span class="meta-label">Email</span><span>{{ user.email }}</span></div>
+            <div class="meta-row"><span class="meta-label">Role</span><span>{{ user.role or 'Member' }}</span></div>
+            <div class="meta-row"><span class="meta-label">Last sign-in</span><span>{{ stats.last_login|clock12 if stats.last_login else 'Not recorded' }}</span></div>
+            <div class="meta-row"><span class="meta-label">Access level</span><span>{% if viewing_self %}Owner{% else %}Guest (IDOR){% endif %}</span></div>
+        </div>
+    </div>
+</div>
+
+<div class="profile-panel profile-activity">
+    <div class="panel-header">
+        <div><span class="panel-kicker">AUDIT TRAIL</span><h3>Recent activity</h3></div>
+    </div>
+    {% if activity %}
+        {% set ev_labels = {
+            'login_success': 'Signed in',
+            'login_failed': 'Failed sign-in',
+            'login_blocked': 'Sign-in blocked (SOC)',
+            'profile_access': 'Opened a profile',
+            'profile_denied': 'Profile access denied',
+            'search': 'Ran a search',
+            'mode_change': 'Changed security mode',
+            'port_probe': 'Port probe detected'
+        } %}
+        {% set ev_kinds = {
+            'login_success': 'good', 'login_failed': 'bad', 'login_blocked': 'bad',
+            'profile_access': 'info', 'profile_denied': 'bad', 'search': 'info',
+            'mode_change': 'warn', 'port_probe': 'warn'
+        } %}
+        {% for ev in activity %}
+        <div class="feed-item">
+            <span class="feed-chip kind-{{ ev_kinds.get(ev.event_type, 'info') }}">{{- ev_labels.get(ev.event_type, ev.event_type) -}}</span>
+            <div class="feed-body">
+                <div class="feed-line">{{ ev.source_ip }}{% if ev.endpoint %}<span class="feed-dot">·</span>{{ ev.endpoint }}{% endif %}</div>
+                {% if ev.details %}<div class="feed-detail">{{ ev.details }}</div>{% endif %}
+            </div>
+            <span class="feed-time">{{ ev.timestamp|clock12 }}</span>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="profile-empty">No activity recorded for this account yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

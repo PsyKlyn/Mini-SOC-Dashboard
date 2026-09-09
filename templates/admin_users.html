@@ -1,0 +1,679 @@
+{% extends "soc_base.html" %}
+
+{% block title %}User Management - CyberLab SOC{% endblock %}
+
+{% block page_label %}USER MANAGEMENT{% endblock %}
+
+{% block content %}
+
+<div class="admin-users-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="page-heading-row">
+
+        <div>
+            <div class="eyebrow">ADMINISTRATION</div>
+
+            <h1 class="page-title">
+                User Management
+            </h1>
+
+            <p class="page-subtitle">
+                Manage CyberLab accounts, roles and access information.
+            </p>
+        </div>
+
+        <div>
+            <a
+                href="#add-user"
+                class="admin-primary-button"
+            >
+                <span>+</span>
+                Add User
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SECURITY MODE NOTICE
+         ===================================================== -->
+
+    {% if not secure_mode %}
+
+    <div class="admin-warning">
+
+        <div class="admin-warning-icon">
+            !
+        </div>
+
+        <div>
+            <strong>INSECURE MODE</strong>
+
+            <p>
+                User management is currently accessible without
+                administrative authorization.
+            </p>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         STATISTICS
+         ===================================================== -->
+
+    <div class="admin-stat-grid">
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon">
+                US
+            </div>
+
+            <div>
+                <span class="admin-stat-label">
+                    TOTAL USERS
+                </span>
+
+                <strong class="admin-stat-value">
+                    {{ total_users }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon active">
+                AC
+            </div>
+
+            <div>
+                <span class="admin-stat-label">
+                    ACTIVE ACCOUNTS
+                </span>
+
+                <strong class="admin-stat-value">
+                    {{ active_users }}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="admin-stat-card">
+
+            <div class="admin-stat-icon mfa">
+                MF
+            </div>
+
+            <div>
+                <span class="admin-stat-label">
+                    MFA ENABLED
+                </span>
+
+                <strong class="admin-stat-value">
+                    {{ mfa_enabled }}
+                </strong>
+
+                <small class="admin-stat-note">
+                    Not configured
+                </small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         USER TABLE PANEL
+         ===================================================== -->
+
+    <section class="admin-panel">
+
+        <div class="admin-panel-header">
+
+            <div>
+
+                <div class="panel-kicker">
+                    DIRECTORY
+                </div>
+
+                <h2>
+                    Team Members
+                </h2>
+
+            </div>
+
+            <div class="admin-panel-count">
+                {{ users|length }} shown
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SEARCH / FILTER BAR
+             ================================================= -->
+
+        <form
+            method="GET"
+            action="{{ url_for('admin_users') }}"
+            class="user-filter-bar"
+        >
+
+            <div class="user-search">
+
+                <span class="search-symbol">
+                    /
+                </span>
+
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search users..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="user-filter">
+
+                <select name="role">
+
+                    <option value="">
+                        All roles
+                    </option>
+
+                    {% for role_row in roles %}
+
+                        <option
+                            value="{{ role_row['role'] }}"
+                            {% if role_filter == role_row['role'] %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ role_row['role'] }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="filter-button"
+            >
+                Filter
+            </button>
+
+
+            {% if search_query or role_filter %}
+
+                <a
+                    href="{{ url_for('admin_users') }}"
+                    class="clear-filter"
+                >
+                    Clear
+                </a>
+
+            {% endif %}
+
+        </form>
+
+
+        <!-- =================================================
+             TABLE
+             ================================================= -->
+
+        <div class="admin-table-wrapper">
+
+            <table class="admin-users-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>USER</th>
+
+                        <th>ROLE</th>
+
+                        <th>EMAIL</th>
+
+                        <th>STATUS</th>
+
+                        <th>MFA</th>
+
+                        <th>LAST LOGIN</th>
+
+                        <th>MEMBER SINCE</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for user in users %}
+
+                    <tr>
+
+                        <!-- USER -->
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <div class="user-avatar">
+                                    {{ user.full_name[:1]|upper
+                                       if user.full_name
+                                       else user.username[:1]|upper }}
+                                </div>
+
+                                <div class="user-info">
+
+                                    <strong>
+                                        {{ user.full_name
+                                           if user.full_name
+                                           else user.username }}
+                                    </strong>
+
+                                    <span>
+                                        @{{ user.username }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <!-- ROLE -->
+
+                        <td>
+
+                            <span class="role-badge">
+                                {{ user.role
+                                   if user.role
+                                   else "Unassigned" }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- EMAIL -->
+
+                        <td>
+
+                            <span class="email-text">
+                                {{ user.email }}
+                            </span>
+
+                        </td>
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if user.active %}
+
+                                <span class="status-badge status-active">
+
+                                    <span class="status-dot"></span>
+
+                                    Active
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-badge status-disabled">
+
+                                    <span class="status-dot"></span>
+
+                                    Disabled
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- MFA -->
+
+                        <td>
+
+                            {% if user.mfa_enabled %}
+
+                                <span class="mfa-enabled">
+                                    Enabled
+                                </span>
+
+                            {% else %}
+
+                                <span class="mfa-disabled">
+                                    Not configured
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- LAST LOGIN -->
+
+                        <td>
+
+                            {% if user.last_login %}
+
+                                <span class="last-login">
+                                    {{ user.last_login }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="never-login">
+                                    Never
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- MEMBER SINCE -->
+
+                        <td>
+
+                            <span class="member-since">
+                                {{ user.member_since
+                                   if user.member_since
+                                   else "—" }}
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            class="empty-users"
+                        >
+
+                            <div class="empty-users-icon">
+                                —
+                            </div>
+
+                            <strong>
+                                No users found
+                            </strong>
+
+                            <p>
+                                Try changing your search or filter.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ADD USER
+         ===================================================== -->
+
+    <section
+        class="admin-panel add-user-panel"
+        id="add-user"
+    >
+
+        <div class="admin-panel-header">
+
+            <div>
+
+                <div class="panel-kicker">
+                    ACCOUNT PROVISIONING
+                </div>
+
+                <h2>
+                    Add User
+                </h2>
+
+                <p class="panel-description">
+                    Create a new CyberLab account.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            method="POST"
+            action="{{ url_for('admin_add_user') }}"
+            class="add-user-form"
+        >
+
+            <div class="form-grid">
+
+                <!-- FULL NAME -->
+
+                <div class="form-field">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="full_name"
+                        placeholder="Alex Morgan"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- USERNAME -->
+
+                <div class="form-field">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="alex"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-field">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="alex@cyberlab.local"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-field">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ROLE -->
+
+                <div class="form-field">
+
+                    <label>
+                        Role
+                    </label>
+
+                    <select name="role" required>
+
+                        <option value="">
+                            Select role
+                        </option>
+
+                        <option value="SOC Analyst I">
+                            SOC Analyst I
+                        </option>
+
+                        <option value="SOC Analyst II">
+                            SOC Analyst II
+                        </option>
+
+                        <option value="SOC Administrator">
+                            SOC Administrator
+                        </option>
+
+                        <option value="Security Engineer">
+                            Security Engineer
+                        </option>
+
+                        <option value="Security Intern">
+                            Security Intern
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- LOCATION -->
+
+                <div class="form-field">
+
+                    <label>
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        name="location"
+                        placeholder="Bengaluru, India"
+                    >
+
+                </div>
+
+
+                <!-- WEBSITE -->
+
+                <div class="form-field form-field-wide">
+
+                    <label>
+                        Website
+                    </label>
+
+                    <input
+                        type="text"
+                        name="website"
+                        placeholder="https://cyberlab.local/user"
+                    >
+
+                </div>
+
+
+                <!-- BIO -->
+
+                <div class="form-field form-field-wide">
+
+                    <label>
+                        Bio
+                    </label>
+
+                    <textarea
+                        name="bio"
+                        rows="4"
+                        placeholder="Short description about the user..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="add-user-actions">
+
+                <button
+                    type="reset"
+                    class="admin-secondary-button"
+                >
+                    Clear
+                </button>
+
+                <button
+                    type="submit"
+                    class="admin-primary-button"
+                >
+                    Create User
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}
