@@ -128,7 +128,7 @@ app.jinja_env.filters["clock12"] = fmt_clock12
 failed_attempts = {}
 
 
-# ================= SOC: shared helpers =================
+#  SOC: shared helpers 
 
 def get_client_ip():
     """Return the visitor's IP address so events can be logged per source."""
@@ -151,8 +151,7 @@ def inject_soc_globals():
     }
 
 
-# ================= public pages (deliberately vulnerable) =================
-
+#  public pages (deliberately vulnerable)
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -177,11 +176,11 @@ def login():
         db = get_db()
 
         if secure_mode_enabled():
-            # --- SECURE branch: parameterized query (SQLi does not work) ---
+            #  SECURE branch: parameterized query (SQLi does not work) 
             sql = "SELECT * FROM users WHERE username = ? AND password = ?"
             user = db.execute(sql, (username, password)).fetchone()
         else:
-            # --- INSECURE branch: raw f-string (SQL injection demo) ---
+            #  INSECURE branch: raw f-string (SQL injection demo) 
             sql = f"""
                 SELECT * FROM users
                 WHERE username = '{username}'
@@ -252,11 +251,11 @@ def profile():
         return redirect("/login")
 
     if secure_mode_enabled():
-        # --- SECURE branch: must be logged in; id is forced from session ---
+        #  SECURE branch: must be logged in; id is forced from session 
         user_id = session["user_id"]
         requested_id = user_id  # ?id= is ignored: users only see themselves
     else:
-        # --- INSECURE branch: ?id= lets anyone read any profile (IDOR) ---
+        # INSECURE branch: ?id= lets anyone read any profile (IDOR) 
         user_id = requested_id or session.get("user_id")
 
     db = get_db()
@@ -266,7 +265,7 @@ def profile():
         flash("User not found.")
         return redirect("/profile")
 
-    # Per-user profile stats + activity, derived from the SOC event log.
+    # Per-user profile stats + activity, derived from the SOC event log
     events = db.execute(
         "SELECT * FROM events ORDER BY id DESC LIMIT 500").fetchall()
     db.close()
@@ -328,13 +327,13 @@ def search():
     db = get_db()
 
     if secure_mode_enabled():
-        # --- SECURE branch: parameterized LIKE with escaped wildcards ---
+        # SECURE branch: parameterized LIKE with escaped wildcards 
         escaped = (query.replace("\\", "\\\\").replace("%", "\\%")
                        .replace("_", "\\_"))
         sql = "SELECT * FROM products WHERE name LIKE ? ESCAPE '\\'"
         results = db.execute(sql, ("%" + escaped + "%",)).fetchall()
     else:
-        # --- INSECURE branch: raw f-string LIKE (SQL injection demo) ---
+        #  INSECURE branch: raw f-string LIKE (SQL injection demo) 
         sql = f"SELECT * FROM products WHERE name LIKE '%{query}%'"
         results = db.execute(sql).fetchall()
 
@@ -346,10 +345,8 @@ def search():
 def admin():
 
     client_ip = get_client_ip()
-
-    # =========================================================
+  
     # ACCESS CONTROL
-    # =========================================================
 
     if secure_mode_enabled():
 
@@ -385,10 +382,8 @@ def admin():
             "Admin panel opened (no access control!)"
         )
 
-
-    # =========================================================
+ 
     # USER SEARCH / FILTER
-    # =========================================================
 
     search_query = request.args.get("q", "").strip()
     role_filter = request.args.get("role", "").strip()
@@ -455,9 +450,9 @@ def admin():
     ).fetchall()
 
 
-    # =========================================================
+    
     # BUILD USER LIST
-    # =========================================================
+    
 
     users = []
 
@@ -492,9 +487,8 @@ def admin():
         users.append(user)
 
 
-    # =========================================================
+    
     # STATISTICS
-    # =========================================================
 
     total_users = db.execute("""
         SELECT COUNT(*) AS count
@@ -514,10 +508,9 @@ def admin():
     mfa_enabled = 0
 
 
-    # =========================================================
+    
     # ROLES
-    # =========================================================
-
+  
     roles = db.execute("""
         SELECT DISTINCT role
         FROM users
@@ -530,10 +523,9 @@ def admin():
     db.close()
 
 
-    # =========================================================
+   
     # RENDER ADMIN PAGE
-    # =========================================================
-
+    
     return render_template(
         "admin.html",
 
@@ -549,17 +541,15 @@ def admin():
         role_filter=role_filter
     )
 
-# ================= ADMIN - ADD USER =================
+#  ADMIN - ADD USER
 
 @app.route("/admin/users/add", methods=["POST"])
 def admin_add_user():
 
     client_ip = get_client_ip()
 
-    # ---------------------------------------------------------
+    
     # Access control
-    # ---------------------------------------------------------
-
     if secure_mode_enabled():
 
         if session.get("user_id") != 2:
@@ -574,9 +564,9 @@ def admin_add_user():
             return "Access denied", 403
 
 
-    # ---------------------------------------------------------
+    
     # Get form data
-    # ---------------------------------------------------------
+  
 
     username = request.form.get("username", "").strip()
     password = request.form.get("password", "").strip()
@@ -588,9 +578,7 @@ def admin_add_user():
     bio = request.form.get("bio", "").strip()
 
 
-    # ---------------------------------------------------------
     # Validation
-    # ---------------------------------------------------------
 
     if not username:
         flash("Username is required.")
@@ -612,11 +600,9 @@ def admin_add_user():
         flash("Role is required.")
         return redirect(url_for("admin") + "#user-management")
 
-
-    # ---------------------------------------------------------
+   
     # Database
-    # ---------------------------------------------------------
-
+    
     db = get_db()
 
 
@@ -642,11 +628,9 @@ def admin_add_user():
             url_for("admin") + "#user-management"
         )
 
-
-    # ---------------------------------------------------------
+ 
     # Create user
-    # ---------------------------------------------------------
-
+  
     member_since = datetime.now().strftime("%Y-%m-%d")
 
 
@@ -683,10 +667,8 @@ def admin_add_user():
     db.close()
 
 
-    # ---------------------------------------------------------
     # SOC event
-    # ---------------------------------------------------------
-
+    
     add_event(
         client_ip,
         "admin_user_created",
@@ -719,7 +701,7 @@ def logout():
     return redirect("/")
 
 
-# ================= SOC dashboard =================
+#  SOC dashboard 
 
 @app.route("/soc")
 def soc_dashboard():
