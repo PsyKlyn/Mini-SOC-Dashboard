@@ -1,9 +1,9 @@
-/* =========================================================
-   CyberLab — Threatrix-inspired application theme
+/* 
+   CyberLab - Threatrix-inspired application theme
    Visual-only redesign for index, login, search and admin.
    Existing routes, forms, Jinja variables and functionality
-   are intentionally preserved.
-   ========================================================= */
+   are intentionally preserved
+*/
 
 :root {
     --app-bg: #070b10;
@@ -22,7 +22,7 @@
     --app-orange: #fb923c;
 }
 
-/* ---------- Base ---------- */
+/*  Base  */
 
 * {
     margin: 0;
@@ -39,7 +39,7 @@ body {
     min-height: 100vh;
 }
 
-/* ---------- Navigation ---------- */
+/*  Navigation  */
 
 body:not(.soc-page) nav {
     background: rgba(9,14,20,.97);
@@ -105,7 +105,7 @@ nav a:hover {
     border: 1px solid rgba(52,211,153,.45);
 }
 
-/* ---------- Main content ---------- */
+/*  Main content  */
 
 main {
     width: 84%;
@@ -134,7 +134,7 @@ p {
     line-height: 1.65;
 }
 
-/* ---------- Cards ---------- */
+/*  Cards  */
 
 .cards {
     display: grid;
@@ -168,7 +168,7 @@ p {
     font-size: 13px;
 }
 
-/* ---------- Links / buttons ---------- */
+/* Links / buttons  */
 
 .card a {
     display: inline-block;
@@ -199,7 +199,7 @@ button:hover {
     transform: translateY(-1px);
 }
 
-/* ---------- Forms: Login / Search ---------- */
+/*  Forms: Login / Search  */
 
 .form-container {
     max-width: 450px;
@@ -266,7 +266,7 @@ main > form:not(.form-container form) button {
     white-space: nowrap;
 }
 
-/* ---------- Messages ---------- */
+/*  Messages  */
 
 .error-message {
     background: var(--app-red-soft);
@@ -288,7 +288,7 @@ main > form:not(.form-container form) button {
     font-size: 12px;
 }
 
-/* ---------- Admin ---------- */
+/*  Admin  */
 
 body:not(.soc-page) main .card {
     min-height: 150px;
@@ -298,7 +298,7 @@ body:not(.soc-page) main .card button {
     margin-top: 16px;
 }
 
-/* ---------- Mobile ---------- */
+/*  Mobile  */
 
 @media (max-width: 800px) {
     body:not(.soc-page) nav {
