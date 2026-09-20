@@ -8,9 +8,7 @@
 
 <div class="admin-page">
 
-    <!-- =====================================================
-         ADMIN PAGE HEADER
-         ===================================================== -->
+    <!--  ADMIN PAGE HEADER -->
 
     <div class="soc-page-heading">
 
@@ -25,8 +23,7 @@
             </h1>
 
             <p>
-                Administrative functions for the CyberLab
-                security-testing application.
+                Administrative functions for the Cyber security-testing application.
             </p>
 
         </div>
@@ -43,9 +40,7 @@
     </div>
 
 
-    <!-- =====================================================
-         ACCESS DENIED
-         ===================================================== -->
+    <!--       ACCESS DENIED -->
 
     {% if denied %}
 
@@ -72,9 +67,7 @@
     {% else %}
 
 
-    <!-- =====================================================
-         SECURITY MODE WARNING
-         ===================================================== -->
+    <!--        SECURITY MODE WARNING -->
 
     {% if not secure_mode %}
 
@@ -95,16 +88,12 @@
     {% endif %}
 
 
-    <!-- =====================================================
-         ADMIN CARDS
-         ===================================================== -->
+    <!--         ADMIN CARDS -->
 
     <div class="admin-card-grid">
 
 
-        <!-- =================================================
-             USER MANAGEMENT CARD
-             ================================================= -->
+        <!--    USER MANAGEMENT CARD -->
 
         <div class="admin-card">
 
@@ -136,9 +125,7 @@
         </div>
 
 
-        <!-- =================================================
-             SYSTEM CARD
-             ================================================= -->
+        <!--    SYSTEM CARD -->
 
         <div class="admin-card">
 
@@ -172,10 +159,8 @@
     </div>
 
 
-    <!-- =====================================================
-         SYSTEM INFORMATION
-         Hidden until View Information is clicked
-         ===================================================== -->
+    <!--    SYSTEM INFORMATION
+            Hidden until View Information is clicked -->
 
     <section
         id="system-information"
@@ -275,10 +260,7 @@
     </section>
 
 
-    <!-- =====================================================
-         TEAM MANAGEMENT
-         Image 1 layout
-         ===================================================== -->
+    <!--    TEAM MANAGEMENT : Image 1 layout -->
 
     <section
         id="user-management"
@@ -287,9 +269,7 @@
     >
 
 
-        <!-- =================================================
-             TEAM MANAGEMENT HEADER
-             ================================================= -->
+        <!--     TEAM MANAGEMENT HEADER -->
 
         <div class="team-page-header">
 
@@ -336,17 +316,12 @@
         </div>
 
 
-        <!-- =================================================
-             TWO COLUMN DASHBOARD
-             ================================================= -->
+        <!--   TWO COLUMN DASHBOARD -->
 
         <div class="team-dashboard-grid">
 
 
-            <!-- =================================================
-                 LEFT COLUMN
-                 TEAM MEMBERS
-                 ================================================= -->
+            <!--   LEFT COLUMN : TEAM MEMBERS -->
 
             <div class="team-members-panel">
 
@@ -389,9 +364,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     FILTER TOOLBAR
-                     ================================================= -->
+                <!--   FILTER TOOLBAR -->
 
                 <div class="team-toolbar">
 
@@ -436,9 +409,7 @@
                 </div>
 
 
-                <!-- =================================================
-                     TEAM MEMBERS TABLE
-                     ================================================= -->
+                <!--    TEAM MEMBERS TABLE -->
 
                 <div class="team-table-container">
 
@@ -634,10 +605,7 @@
             </div>
 
 
-            <!-- =================================================
-                 RIGHT COLUMN
-                 STATISTICS
-                 ================================================= -->
+            <!--   RIGHT COLUMN : STATISTICS  -->
 
             <div class="team-stat-column">
 
@@ -704,9 +672,7 @@
         </div>
 
 
-        <!-- =====================================================
-             ADD USER MODAL
-             ===================================================== -->
+        <!--    ADD USER MODAL -->
 
         <div
             id="add-user-panel"
@@ -964,15 +930,9 @@
 </div>
 
 
-<!-- =========================================================
-     JAVASCRIPT
-     ========================================================= -->
-
 <script>
 
-/* ============================================================
-   SHOW TEAM MANAGEMENT
-   ============================================================ */
+/*   SHOW TEAM MANAGEMENT */
 
 function showUserManagement() {
 
@@ -999,9 +959,7 @@ function showUserManagement() {
 }
 
 
-/* ============================================================
-   HIDE TEAM MANAGEMENT
-   ============================================================ */
+/*    HIDE TEAM MANAGEMENT */
 
 function hideUserManagement() {
 
@@ -1024,9 +982,7 @@ function hideUserManagement() {
 }
 
 
-/* ============================================================
-   ADD USER MODAL
-   ============================================================ */
+/*   ADD USER MODAL */
 
 function showAddUserForm() {
 
@@ -1058,9 +1014,7 @@ function hideAddUserForm() {
 }
 
 
-/* ============================================================
-   ROLE FILTER
-   ============================================================ */
+/*   ROLE FILTER */
 
 function toggleRoleFilter() {
 
@@ -1085,9 +1039,7 @@ function toggleRoleFilter() {
 }
 
 
-/* ============================================================
-   LIVE USER SEARCH
-   ============================================================ */
+/*   LIVE USER SEARCH */
 
 function filterUsers() {
 
@@ -1160,9 +1112,7 @@ function filterUsers() {
 }
 
 
-/* ============================================================
-   SYSTEM INFORMATION
-   ============================================================ */
+/*   SYSTEM INFORMATION */
 
 function showSystemInformation() {
 
@@ -1206,9 +1156,7 @@ function hideSystemInformation() {
 }
 
 
-/* ============================================================
-   CLOSE MODAL WHEN CLICKING OUTSIDE
-   ============================================================ */
+/*  CLOSE MODAL WHEN CLICKING OUTSIDE */
 
 const addUserPanel =
     document.getElementById("add-user-panel");
@@ -1234,9 +1182,7 @@ if (addUserPanel) {
 }
 
 
-/* ============================================================
-   ESC KEY
-   ============================================================ */
+/* ESC KEY */
 
 document.addEventListener(
     "keydown",
