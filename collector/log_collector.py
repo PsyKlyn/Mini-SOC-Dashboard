@@ -1,7 +1,4 @@
-# ---------- LOG COLLECTOR ----------
-# Appends human-readable lines to logs/security.log. Every SOC action
-# (events, detections, responses) is mirrored here so visitors can see
-# the story of an attack in plain text.
+#  LOG COLLECTOR 
 
 import os
 
