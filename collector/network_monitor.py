@@ -1,8 +1,4 @@
-# ---------- NETWORK MONITOR (honeypot) ----------
-# The app listens on a few extra "honeypot" ports (9101-9105). Any real
-# connection to those ports is recorded as a port_probe event, and a
-# scanner touching several of them in a short window triggers a
-# PORT SCAN alert. simulate_scan() replays a fictional attacker.
+# NETWORK MONITOR (honeypot) 
 
 import socket
 import threading
